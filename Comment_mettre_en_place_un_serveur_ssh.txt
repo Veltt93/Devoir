@@ -1,0 +1,23 @@
+Comment mettre en place un serveur ssh ?
+
+Avant d’installer fails2ban il faut installer un serveur ssh sur votre machine.
+Sur ubuntu il suffit d’aller sur le terminal et de taper : « sudo apt-get install fail2ban »
+Une fois ça fais, nous allons accéder au dossier de fail2ban grâce à la commande : 
+« cd  /etc/fail2ban/ »
+
+Nous allons devoir faire une sauvegarde du dossier jail.conf car le contenue va se ré initialiser si on met à jour fail2ban. Pour copier ce fichier il suffit de taper :
+« sudo cp jail.conf jail.local »
+
+Pour modifier ce fichier il faut avoir installé la commande « vim » (sudo apt install vim).
+« sudo nano vim jail.local »
+Nous arrivons sur une immense page. Si l’on descend nous pourons voir :
+« bantime = 10m » celui-ci définie le temps de ban après que nous nous somme trompé de mdp
+« maxretry = 3 »  » celui-ci définie le nombre d’essaye que nous avons avant de se faire ban
+« destemail = ………………… » ici nous allons rentrer une adresse email sur laquelle on recevra un mail pour nous prévenir d’une intrusion ou blocage d’IP.
+« mta = ……….. » mettre « mail »
+
+Puis nous allons descendre jusqu’à trouver « action = %(action_)s » et rajouter « mwl » juste apres le « _ » ce qui donne « action = %(action_mwl)s ».
+Cela permet de donner les identifiants de la personne qui est banni dans le mail envoyé 
+
+Si vous vous trompez trop de fois, vous ne pourrai plus vous connecter. Pour deban votre adresse tapez :
+fail2ban-client set [nom du jail] unbanip [IP concerné]
